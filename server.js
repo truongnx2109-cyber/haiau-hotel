@@ -29,6 +29,7 @@ app.get("/openapi.json", (req, res) => res.json(openapiSpec));
 const ROOMS = [
   {
     id: "STD",
+    anh: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=800&q=80",
     ten: "Phòng Standard",
     mo_ta: "Phòng tiêu chuẩn 1 giường đôi, view thành phố.",
     gia_moi_dem: 600000,
@@ -38,6 +39,7 @@ const ROOMS = [
   },
   {
     id: "DLX",
+    anh: "https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=800&q=80",
     ten: "Phòng Deluxe",
     mo_ta: "Phòng cao cấp 1 giường king, view biển một phần.",
     gia_moi_dem: 1100000,
@@ -47,6 +49,7 @@ const ROOMS = [
   },
   {
     id: "SUITE",
+    anh: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=800&q=80",
     ten: "Phòng Suite Biển",
     mo_ta: "Suite rộng có ban công, view biển trực diện.",
     gia_moi_dem: 2500000,
@@ -56,6 +59,7 @@ const ROOMS = [
   },
   {
     id: "FAM",
+    anh: "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=800&q=80",
     ten: "Phòng Gia Đình",
     mo_ta: "2 giường đôi, phù hợp gia đình 4 người.",
     gia_moi_dem: 1600000,
@@ -141,6 +145,7 @@ app.get("/api/availability", (req, res) => {
     return {
       room_id: r.id,
       ten: r.ten,
+      anh: r.anh,
       gia_moi_dem: r.gia_moi_dem,
       so_phong_con_trong: conTrong,
       con_phong: conTrong > 0,
