@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Khách sạn Hải Âu — Nghỉ dưỡng bên bờ biển</title>
+<style>
+  :root{
+    --navy:#0c3b5e; --blue:#0a6cb0; --teal:#0fa3c4; --gold:#c9a44c;
+    --bg:#f7fafc; --ink:#1f2d3d; --muted:#5b6b7b; --line:#e4ebf1;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.6}
+  a{color:inherit;text-decoration:none}
+  .container{max-width:1140px;margin:0 auto;padding:0 20px}
+  header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.95);backdrop-filter:blur(6px);border-bottom:1px solid var(--line)}
+  nav{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;color:var(--navy)}
+  .logo span{font-size:24px}
+  .nav-links{display:flex;gap:26px;font-weight:600;font-size:15px}
+  .nav-links a:hover{color:var(--blue)}
+  .btn{display:inline-block;background:var(--blue);color:#fff;padding:10px 20px;border-radius:30px;font-weight:700;border:none;cursor:pointer;font-size:15px;transition:.2s}
+  .btn:hover{background:var(--navy)}
+  .btn-gold{background:var(--gold)} .btn-gold:hover{background:#b08e35}
+  .hero{position:relative;height:88vh;min-height:560px;display:flex;align-items:center;
+    background:linear-gradient(rgba(7,33,53,.55),rgba(7,33,53,.55)),url('https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&w=1600&q=80') center/cover}
+  .hero-inner{color:#fff;max-width:680px}
+  .hero .tag{letter-spacing:3px;text-transform:uppercase;font-size:13px;color:var(--gold);font-weight:700}
+  .hero h1{font-size:54px;line-height:1.1;margin:14px 0 18px;font-weight:800}
+  .hero p{font-size:18px;opacity:.95;margin-bottom:28px}
+  .bookbar{background:#fff;border-radius:16px;box-shadow:0 12px 40px rgba(8,40,66,.18);padding:20px;
+    display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr auto;gap:14px;align-items:end;margin-top:-46px;position:relative;z-index:20}
+  .bookbar label{font-size:12px;font-weight:700;color:var(--muted);display:block;margin-bottom:5px}
+  .bookbar input,.bookbar select{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;font-size:14px}
+  .bookbar .btn{height:46px;white-space:nowrap}
+  section{padding:74px 0}
+  .center{text-align:center}
+  .kicker{color:var(--teal);font-weight:700;letter-spacing:2px;text-transform:uppercase;font-size:13px}
+  h2.title{font-size:34px;color:var(--navy);margin:8px 0 14px;font-weight:800}
+  .lead{color:var(--muted);max-width:680px;margin:0 auto 10px}
+  .about{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
+  .about img{width:100%;border-radius:18px;box-shadow:0 16px 40px rgba(8,40,66,.15)}
+  .stats{display:flex;gap:34px;margin-top:24px}
+  .stats b{font-size:30px;color:var(--blue);display:block}
+  .stats span{font-size:13px;color:var(--muted)}
+  .rooms{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:26px;margin-top:36px}
+  .room{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 8px 28px rgba(8,40,66,.08);transition:.25s;display:flex;flex-direction:column}
+  .room:hover{transform:translateY(-6px);box-shadow:0 16px 40px rgba(8,40,66,.16)}
+  .room .photo{height:200px;background-size:cover;background-position:center;position:relative}
+  .room .price{position:absolute;bottom:12px;right:12px;background:var(--gold);color:#fff;font-weight:700;padding:6px 14px;border-radius:30px;font-size:14px}
+  .room .body{padding:20px;display:flex;flex-direction:column;flex:1}
+  .room h3{color:var(--navy);font-size:20px;margin-bottom:6px}
+  .room .desc{color:var(--muted);font-size:14px;flex:1}
+  .room .meta{display:flex;gap:14px;font-size:13px;color:var(--muted);margin:12px 0}
+  .amen{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+  .amen span{background:#eef5fa;color:var(--blue);font-size:12px;padding:3px 10px;border-radius:20px}
+  .feat-bg{background:var(--navy);color:#fff}
+  .feat-bg .kicker{color:var(--gold)} .feat-bg h2.title{color:#fff}
+  .features{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:26px;margin-top:36px}
+  .feature{text-align:center;padding:10px}
+  .feature .ic{font-size:38px}
+  .feature h4{margin:10px 0 6px;font-size:17px}
+  .feature p{color:#b9c9d6;font-size:14px}
+  .panels{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:36px}
+  .panel{background:#fff;border-radius:16px;padding:26px;box-shadow:0 8px 28px rgba(8,40,66,.08)}
+  .panel h3{color:var(--navy);margin-bottom:16px}
+  .field{margin-bottom:13px}
+  .field label{font-size:13px;font-weight:600;display:block;margin-bottom:4px}
+  .field input,.field select,.field textarea{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font-size:14px;font-family:inherit}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .result{margin-top:14px;padding:14px;border-radius:10px;font-size:14px;display:none}
+  .result.ok{background:#e8f8ef;border:1px solid #b6e6c9;color:#1c6b3e;display:block}
+  .result.err{background:#fdecec;border:1px solid #f3c0c0;color:#b03333;display:block}
+  footer{background:#072135;color:#aebecb;padding:50px 0 24px;font-size:14px}
+  .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:34px;margin-bottom:30px}
+  footer h4{color:#fff;margin-bottom:12px}
+  footer .copy{border-top:1px solid #173a52;padding-top:18px;text-align:center;font-size:13px}
+  .dev-links{color:var(--teal);font-weight:600}
+  @media(max-width:880px){
+    .nav-links{display:none}
+    .hero h1{font-size:36px}
+    .bookbar{grid-template-columns:1fr 1fr;margin-top:20px}
+    .about,.panels{grid-template-columns:1fr}
+    .foot-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <nav>
+      <div class="logo"><span>🕊️</span> Khách sạn Hải Âu</div>
+      <div class="nav-links">
+        <a href="#about">Giới thiệu</a>
+        <a href="#rooms">Phòng nghỉ</a>
+        <a href="#features">Tiện ích</a>
+        <a href="#booking">Đặt phòng</a>
+        <a href="#lookup">Tra cứu</a>
+      </div>
+      <a href="#booking" class="btn">Đặt phòng ngay</a>
+    </nav>
+  </div>
+</header>
+<div class="hero">
+  <div class="container hero-inner">
+    <div class="tag">Nghỉ dưỡng bên bờ biển</div>
+    <h1>Đánh thức giác quan giữa thiên nhiên biển cả</h1>
+    <p>Khách sạn Hải Âu — không gian sang trọng, view biển trực diện, dịch vụ tận tâm cho kỳ nghỉ trọn vẹn của bạn.</p>
+    <a href="#rooms" class="btn btn-gold">Khám phá phòng nghỉ</a>
+  </div>
+</div>
+<div class="container">
+  <form class="bookbar" onsubmit="event.preventDefault();quickCheck()">
+    <div><label>LOẠI PHÒNG</label><select id="qb_room"><option value="">Tất cả phòng</option></select></div>
+    <div><label>NHẬN PHÒNG</label><input type="date" id="qb_in"></div>
+    <div><label>TRẢ PHÒNG</label><input type="date" id="qb_out"></div>
+    <div><label>SỐ KHÁCH</label><select id="qb_guest"><option>1</option><option>2</option><option>3</option><option>4</option></select></div>
+    <button class="btn" type="submit">Kiểm tra phòng</button>
+  </form>
+  <div id="qb_result" class="lead" style="margin-top:16px;min-height:10px;color:var(--blue);font-weight:600"></div>
+</div>
+<section id="about">
+  <div class="container about">
+    <div>
+      <div class="kicker">Về chúng tôi</div>
+      <h2 class="title">Nơi mỗi khoảnh khắc đều đáng nhớ</h2>
+      <p style="color:var(--muted)">Tọa lạc ngay mặt biển, Khách sạn Hải Âu mang đến trải nghiệm nghỉ dưỡng đẳng cấp với hệ thống phòng hiện đại, nhà hàng hải sản tươi sống, hồ bơi vô cực và đội ngũ phục vụ chuyên nghiệp 24/7.</p>
+      <div class="stats">
+        <div><b>28</b><span>Phòng nghỉ</span></div>
+        <div><b>4★</b><span>Tiêu chuẩn</span></div>
+        <div><b>24/7</b><span>Lễ tân</span></div>
+        <div><b>4.8</b><span>Đánh giá</span></div>
+      </div>
+    </div>
+    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=900&q=80" alt="Khách sạn Hải Âu">
+  </div>
+</section>
+<section id="rooms" style="background:#fff">
+  <div class="container">
+    <div class="center">
+      <div class="kicker">Phòng & Giá</div>
+      <h2 class="title">Lựa chọn phòng nghỉ</h2>
+      <p class="lead">Giá và tình trạng phòng được lấy trực tiếp từ hệ thống đặt phòng (API).</p>
+    </div>
+    <div id="roomList" class="rooms">Đang tải phòng...</div>
+  </div>
+</section>
+<section id="features" class="feat-bg">
+  <div class="container center">
+    <div class="kicker">Tiện ích</div>
+    <h2 class="title">Đặc quyền dành cho bạn</h2>
+    <div class="features">
+      <div class="feature"><div class="ic">🏖️</div><h4>Bãi biển riêng</h4><p>Cát trắng, nước trong ngay trước khách sạn.</p></div>
+      <div class="feature"><div class="ic">🏊</div><h4>Hồ bơi vô cực</h4><p>View biển tuyệt đẹp, mở cửa cả ngày.</p></div>
+      <div class="feature"><div class="ic">🍽️</div><h4>Nhà hàng hải sản</h4><p>Hải sản tươi sống, ẩm thực đa dạng.</p></div>
+      <div class="feature"><div class="ic">🚗</div><h4>Đưa đón sân bay</h4><p>Dịch vụ xe theo yêu cầu.</p></div>
+      <div class="feature"><div class="ic">💆</div><h4>Spa & Gym</h4><p>Thư giãn và rèn luyện sức khỏe.</p></div>
+      <div class="feature"><div class="ic">📶</div><h4>Wifi tốc độ cao</h4><p>Miễn phí toàn khu vực.</p></div>
+    </div>
+  </div>
+</section>
+<section id="booking">
+  <div class="container">
+    <div class="center">
+      <div class="kicker">Đặt phòng & Tra cứu</div>
+      <h2 class="title">Giữ phòng chỉ trong 1 phút</h2>
+    </div>
+    <div class="panels">
+      <div class="panel">
+        <h3>📝 Đặt phòng</h3>
+        <form onsubmit="event.preventDefault();datPhong()">
+          <div class="grid2">
+            <div class="field"><label>Họ tên *</label><input id="bk_ten" placeholder="Nguyễn Văn A" required></div>
+            <div class="field"><label>Số điện thoại *</label><input id="bk_sdt" placeholder="0901234567" required></div>
+          </div>
+          <div class="grid2">
+            <div class="field"><label>Loại phòng *</label><select id="bk_room" required></select></div>
+            <div class="field"><label>Số phòng</label><input type="number" id="bk_so" value="1" min="1"></div>
+          </div>
+          <div class="grid2">
+            <div class="field"><label>Nhận phòng *</label><input type="date" id="bk_in" required></div>
+            <div class="field"><label>Trả phòng *</label><input type="date" id="bk_out" required></div>
+          </div>
+          <div class="field"><label>Ghi chú</label><textarea id="bk_ghichu" rows="2" placeholder="Yêu cầu thêm (nếu có)"></textarea></div>
+          <button class="btn" style="width:100%" type="submit">Xác nhận đặt phòng</button>
+          <div id="bk_result" class="result"></div>
+        </form>
+      </div>
+      <div class="panel" id="lookup">
+        <h3>🔎 Tra cứu / Hủy đơn</h3>
+        <div class="field"><label>Mã đơn đặt</label><input id="tc_ma" placeholder="VD: HA12345678"></div>
+        <div style="display:flex;gap:10px">
+          <button class="btn" style="flex:1" onclick="traCuu()">Tra cứu</button>
+          <button class="btn" style="flex:1;background:#c0392b" onclick="huyDon()">Hủy đơn</button>
+        </div>
+        <div id="tc_result" class="result"></div>
+        <p style="margin-top:18px;font-size:13px;color:var(--muted)">
+          Dành cho lập trình viên: <a class="dev-links" href="/docs" target="_blank">Tài liệu API (Swagger)</a> •
+          <a class="dev-links" href="/test.html" target="_blank">Trang test API</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div>
+        <h4>🕊️ Khách sạn Hải Âu</h4>
+        <p>Khu nghỉ dưỡng 4 sao bên bờ biển. Mang đến cho bạn kỳ nghỉ sang trọng và đáng nhớ.</p>
+      </div>
+      <div>
+        <h4>Liên hệ</h4>
+        <p>📍 Đường Biển, TP. Biển Xanh<br>📞 1900 1234<br>✉️ booking@haiau-hotel.vn</p>
+      </div>
+      <div>
+        <h4>Liên kết</h4>
+        <p><a href="#rooms">Phòng nghỉ</a><br><a href="#booking">Đặt phòng</a><br><a href="/docs" target="_blank">API cho đối tác</a></p>
+      </div>
+    </div>
+    <div class="copy">© 2026 Khách sạn Hải Âu — Demo website. Powered by Smax AI integration.</div>
+  </div>
+</footer>
+<script>
+async function call(method, url, body){
+  const opt={method,headers:{"Content-Type":"application/json"}};
+  if(body) opt.body=JSON.stringify(body);
+  const r=await fetch(url,opt); return r.json();
+}
+const PHOTOS={
+  STD:"https://images.unsplash.com/photo-1611892440504-42a792e24d32?auto=format&fit=crop&w=700&q=80",
+  DLX:"https://images.unsplash.com/photo-1590490360182-c33d57733427?auto=format&fit=crop&w=700&q=80",
+  SUITE:"https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=700&q=80",
+  FAM:"https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&w=700&q=80"
+};
+function fmt(n){return n.toLocaleString('vi-VN')+'đ';}
+async function loadRooms(){
+  const data=await call("GET","/api/rooms");
+  const list=document.getElementById("roomList"); list.innerHTML="";
+  document.getElementById("bk_room").innerHTML="";
+  data.du_lieu.forEach(r=>{
+    const photo=PHOTOS[r.id]||"https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=700&q=80";
+    list.innerHTML+=`<div class="room">
+      <div class="photo" style="background-image:url('${photo}')"><span class="price">${fmt(r.gia_moi_dem)}/đêm</span></div>
+      <div class="body">
+        <h3>${r.ten}</h3>
+        <div class="desc">${r.mo_ta}</div>
+        <div class="meta">👥 ${r.suc_chua} khách &nbsp;•&nbsp; 🛏️ ${r.tong_so_phong} phòng</div>
+        <div class="amen">${r.tien_nghi.map(t=>`<span>${t}</span>`).join("")}</div>
+        <button class="btn" onclick="chonPhong('${r.id}')">Đặt phòng này</button>
+      </div></div>`;
+    const opt=`<option value="${r.id}">${r.ten}</option>`;
+    document.getElementById("qb_room").innerHTML+=opt;
+    document.getElementById("bk_room").innerHTML+=opt;
+  });
+}
+function chonPhong(id){
+  document.getElementById("bk_room").value=id;
+  document.getElementById("booking").scrollIntoView({behavior:"smooth"});
+}
+async function quickCheck(){
+  const ci=document.getElementById("qb_in").value, co=document.getElementById("qb_out").value, rid=document.getElementById("qb_room").value;
+  const box=document.getElementById("qb_result");
+  if(!ci||!co){box.textContent="⚠️ Vui lòng chọn ngày nhận và trả phòng.";return;}
+  let url=`/api/availability?checkin=${ci}&checkout=${co}`; if(rid)url+=`&room_id=${rid}`;
+  const d=await call("GET",url);
+  if(!d.thanh_cong){box.textContent="⚠️ "+d.loi;return;}
+  const txt=d.du_lieu.map(x=>`${x.ten}: ${x.con_phong?('còn '+x.so_phong_con_trong+' phòng'):'hết phòng'} (${fmt(x.gia_moi_dem)}/đêm)`).join(" • ");
+  box.innerHTML=`✅ ${d.so_dem} đêm — ${txt}`;
+}
+async function datPhong(){
+  const body={
+    ten_khach:document.getElementById("bk_ten").value,
+    sdt:document.getElementById("bk_sdt").value,
+    room_id:document.getElementById("bk_room").value,
+    so_phong:document.getElementById("bk_so").value,
+    checkin:document.getElementById("bk_in").value,
+    checkout:document.getElementById("bk_out").value,
+    ghi_chu:document.getElementById("bk_ghichu").value
+  };
+  const box=document.getElementById("bk_result");
+  const res=await call("POST","/api/bookings",body);
+  if(res.thanh_cong){
+    const d=res.du_lieu;
+    box.className="result ok";
+    box.innerHTML=`✅ Đặt phòng thành công!<br>Mã đơn: <b>${d.ma_don}</b><br>${d.ten_phong} • ${d.so_dem} đêm • Tổng: <b>${fmt(d.tong_tien)}</b><br><small>Lưu mã đơn để tra cứu.</small>`;
+    document.getElementById("tc_ma").value=d.ma_don;
+  }else{
+    box.className="result err"; box.textContent="❌ "+res.loi;
+  }
+}
+async function traCuu(){
+  const ma=document.getElementById("tc_ma").value, box=document.getElementById("tc_result");
+  if(!ma){box.className="result err";box.textContent="❌ Nhập mã đơn.";return;}
+  const res=await call("GET","/api/bookings/"+ma);
+  if(res.thanh_cong){const d=res.du_lieu;
+    box.className="result ok";
+    box.innerHTML=`Khách: <b>${d.ten_khach}</b> (${d.sdt})<br>${d.ten_phong} • ${d.checkin} → ${d.checkout} (${d.so_dem} đêm)<br>Tổng: <b>${fmt(d.tong_tien)}</b> • Trạng thái: <b>${d.trang_thai}</b>`;
+  }else{box.className="result err";box.textContent="❌ "+res.loi;}
+}
+async function huyDon(){
+  const ma=document.getElementById("tc_ma").value, box=document.getElementById("tc_result");
+  if(!ma){box.className="result err";box.textContent="❌ Nhập mã đơn.";return;}
+  const res=await call("POST","/api/bookings/"+ma+"/cancel");
+  box.className=res.thanh_cong?"result ok":"result err";
+  box.textContent=(res.thanh_cong?"✅ ":"❌ ")+(res.thong_bao||res.loi);
+}
+loadRooms();
+</script>
+</body>
+</html>

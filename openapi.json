@@ -1,0 +1,145 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Khách sạn Hải Âu - API",
+    "version": "1.1.0",
+    "description": "API JSON quản lý đặt phòng Khách sạn Hải Âu. Dùng để nối với Smax AI hoặc bất kỳ ứng dụng nào.\n\nMọi phản hồi đều có trường `thanh_cong` (true/false)."
+  },
+  "servers": [
+    { "url": "/", "description": "Server hiện tại (cùng domain)" }
+  ],
+  "tags": [
+    { "name": "Phòng", "description": "Thông tin & tình trạng phòng" },
+    { "name": "Đặt phòng", "description": "Tạo, tra cứu, hủy đơn đặt" },
+    { "name": "Hệ thống", "description": "Kiểm tra server" }
+  ],
+  "paths": {
+    "/api/health": {
+      "get": {
+        "tags": ["Hệ thống"],
+        "summary": "Kiểm tra server sống",
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/rooms": {
+      "get": {
+        "tags": ["Phòng"],
+        "summary": "Danh sách tất cả loại phòng",
+        "responses": {
+          "200": {
+            "description": "Danh sách loại phòng",
+            "content": {
+              "application/json": {
+                "example": {
+                  "thanh_cong": true,
+                  "so_loai": 4,
+                  "du_lieu": [
+                    { "id": "DLX", "ten": "Phòng Deluxe", "gia_moi_dem": 1100000, "suc_chua": 2, "tong_so_phong": 8 }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/rooms/{id}": {
+      "get": {
+        "tags": ["Phòng"],
+        "summary": "Chi tiết một loại phòng",
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "string" }, "example": "DLX" }
+        ],
+        "responses": { "200": { "description": "Chi tiết phòng" }, "404": { "description": "Không tìm thấy" } }
+      }
+    },
+    "/api/availability": {
+      "get": {
+        "tags": ["Phòng"],
+        "summary": "Kiểm tra phòng trống theo ngày",
+        "parameters": [
+          { "name": "checkin", "in": "query", "required": true, "schema": { "type": "string", "format": "date" }, "example": "2026-06-20" },
+          { "name": "checkout", "in": "query", "required": true, "schema": { "type": "string", "format": "date" }, "example": "2026-06-22" },
+          { "name": "room_id", "in": "query", "required": false, "schema": { "type": "string" }, "example": "DLX" }
+        ],
+        "responses": {
+          "200": {
+            "description": "Số phòng còn trống",
+            "content": {
+              "application/json": {
+                "example": {
+                  "thanh_cong": true, "checkin": "2026-06-20", "checkout": "2026-06-22", "so_dem": 2,
+                  "du_lieu": [ { "room_id": "DLX", "ten": "Phòng Deluxe", "gia_moi_dem": 1100000, "so_phong_con_trong": 8, "con_phong": true, "tong_tien_du_kien": 2200000 } ]
+                }
+              }
+            }
+          },
+          "400": { "description": "Thiếu hoặc sai tham số ngày" }
+        }
+      }
+    },
+    "/api/bookings": {
+      "get": {
+        "tags": ["Đặt phòng"],
+        "summary": "Danh sách đơn (lọc theo SĐT nếu có)",
+        "parameters": [
+          { "name": "sdt", "in": "query", "required": false, "schema": { "type": "string" }, "example": "0901234567" }
+        ],
+        "responses": { "200": { "description": "Danh sách đơn" } }
+      },
+      "post": {
+        "tags": ["Đặt phòng"],
+        "summary": "Tạo đơn đặt phòng",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["ten_khach", "sdt", "room_id", "checkin", "checkout"],
+                "properties": {
+                  "ten_khach": { "type": "string" },
+                  "sdt": { "type": "string" },
+                  "room_id": { "type": "string", "enum": ["STD", "DLX", "SUITE", "FAM"] },
+                  "checkin": { "type": "string", "format": "date" },
+                  "checkout": { "type": "string", "format": "date" },
+                  "so_phong": { "type": "integer", "default": 1 },
+                  "ghi_chu": { "type": "string" }
+                }
+              },
+              "example": {
+                "ten_khach": "Nguyễn Văn A", "sdt": "0901234567", "room_id": "DLX",
+                "checkin": "2026-06-20", "checkout": "2026-06-22", "so_phong": 1, "ghi_chu": "Phòng tầng cao"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": { "description": "Đặt thành công" },
+          "400": { "description": "Thiếu thông tin" },
+          "409": { "description": "Hết phòng" }
+        }
+      }
+    },
+    "/api/bookings/{ma_don}": {
+      "get": {
+        "tags": ["Đặt phòng"],
+        "summary": "Tra cứu một đơn theo mã",
+        "parameters": [
+          { "name": "ma_don", "in": "path", "required": true, "schema": { "type": "string" }, "example": "HA12345678" }
+        ],
+        "responses": { "200": { "description": "Chi tiết đơn" }, "404": { "description": "Không tìm thấy" } }
+      }
+    },
+    "/api/bookings/{ma_don}/cancel": {
+      "post": {
+        "tags": ["Đặt phòng"],
+        "summary": "Hủy một đơn đặt",
+        "parameters": [
+          { "name": "ma_don", "in": "path", "required": true, "schema": { "type": "string" }, "example": "HA12345678" }
+        ],
+        "responses": { "200": { "description": "Đã hủy" }, "404": { "description": "Không tìm thấy" } }
+      }
+    }
+  }
+}
