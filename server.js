@@ -96,6 +96,17 @@ function soPhongDaDat(roomId, checkin, checkout) {
   ).reduce((sum, b) => sum + (b.so_phong || 1), 0);
 }
 
+// Chấp nhận cả "YYYY-MM-DD" lẫn "DD/MM/YYYY" (định dạng Smax AI hay dùng)
+function chuanHoaNgay(s) {
+  if (!s) return s;
+  s = String(s).trim();
+  const m = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
+  if (m) {
+    return `${m[3]}-${m[2].padStart(2, "0")}-${m[1].padStart(2, "0")}`;
+  }
+  return s;
+}
+
 function songay(checkin, checkout) {
   const d1 = new Date(checkin);
   const d2 = new Date(checkout);
@@ -125,7 +136,9 @@ app.get("/api/rooms/:id", (req, res) => {
 });
 
 app.get("/api/availability", (req, res) => {
-  const { checkin, checkout, room_id } = req.query;
+  let { checkin, checkout, room_id } = req.query;
+  checkin = chuanHoaNgay(checkin);
+  checkout = chuanHoaNgay(checkout);
   if (!checkin || !checkout) {
     return res.status(400).json({ thanh_cong: false, loi: "Thiếu checkin hoặc checkout (định dạng YYYY-MM-DD)" });
   }
@@ -156,7 +169,9 @@ app.get("/api/availability", (req, res) => {
 });
 
 app.post("/api/bookings", (req, res) => {
-  const { ten_khach, sdt, room_id, checkin, checkout, so_phong, ghi_chu } = req.body || {};
+  let { ten_khach, sdt, room_id, checkin, checkout, so_phong, ghi_chu } = req.body || {};
+  checkin = chuanHoaNgay(checkin);
+  checkout = chuanHoaNgay(checkout);
   if (!ten_khach || !sdt || !room_id || !checkin || !checkout) {
     return res.status(400).json({
       thanh_cong: false,
